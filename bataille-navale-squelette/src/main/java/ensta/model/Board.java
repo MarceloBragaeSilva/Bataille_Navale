@@ -51,14 +51,14 @@ public class Board implements IBoard {
         for(int y = 0; y <= this.size; y++){     //for each line
 			// print for Navires
             if (y != 0){
-                if (y >= 10) System.out.print(y + " ");
-				else 		 System.out.print(y + "  ");
+                if (y >= 10) {System.out.print(y + " ");}
+				else 		 {System.out.print(y + "  ");}
             }
             for (int x=0; x <= this.size; x++) {
                 if (y == 0){
-                    if(x == this.size) System.out.print(" " + letterColumn + "           ");
-					else if (x==0)     System.out.print("  ");
-                    else               System.out.print(" " + letterColumn);
+                    if(x == this.size) {System.out.print(" " + letterColumn + "           ");}
+					else if (x==0)     {System.out.print("  ");}
+                    else               {System.out.print(" " + letterColumn);}
                     letterColumn++;
                 }else if (y != 0 && x!= 0 && x!= this.size)
                     System.out.print(this.board_ships[x-1][y-1] + " ");      
@@ -69,19 +69,19 @@ public class Board implements IBoard {
 			//print for Frappes
             letterColumn = 64;
             if (y != 0){
-                if (y >= 10) System.out.print(y + " ");
-                else         System.out.print(y + "  ");
+                if (y >= 10) {System.out.print(y + " ");}
+                else         {System.out.print(y + "  ");}
             }
             for (int x=0; x <= this.size; x++) {
                 if (y == 0){
-					if (x==0)     System.out.print("  ");
-                    else          System.out.print(" " + letterColumn);
+					if (x==0)     {System.out.print("  ");}
+                    else          {System.out.print(" " + letterColumn);}
                     letterColumn++;
                 }else if (y != 0 && x!= 0){
 					System.out.print(this.board_hits[y-1][x-1] + " ");
                 }
             }    
-            System.out.print("\n");
+            System.out.println();
         }
 
     }
