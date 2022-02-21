@@ -40,6 +40,16 @@ public class Board implements IBoard {
     }
 
     public void print(){
+		/*	y0|A  B  C  D  E  F
+		    y1|
+			y2|
+			y3|
+			y4|
+			y5|
+			y6|
+			   __ __ __ __ __ __>
+			   x1 x2 x3 x4 x5 x6
+		*/
 
         System.out.println(this.nom);
         System.out.print("Navires:");
@@ -48,7 +58,7 @@ public class Board implements IBoard {
 		System.out.println("     Frappes:");
         char letterColumn = 64;
 
-        for(int y = 0; y <= this.size; y++){     //for each line
+        for(int y=0; y <= this.size; y++){     //for each line
 			// print for Navires
             if (y != 0){
                 if (y >= 10) {System.out.print(y + " ");}
@@ -90,27 +100,26 @@ public class Board implements IBoard {
 		Orientation o = ship.getOrientation();
 		int dx = 0, dy = 0;
 		if (o == Orientation.EAST) {
-			if (coords.getX() + ship.getLength() >= this.size) {
-				return false;
-			}
-			dx = 1;
-		} else if (o == Orientation.SOUTH) {
-			if (coords.getY() + ship.getLength() >= this.size) {
-				return false;
-			}
-			dy = 1;
-		} else if (o == Orientation.NORTH) {
-			if (coords.getY() + 1 - ship.getLength() < 0) {
-				return false;
-			}
-			dy = -1;
-		} else if (o == Orientation.WEST) {
-			if (coords.getX() + 1 - ship.getLength() < 0) {
+			if (coords.getX() + 1 - ship.getLength() < 0 || coords.getX() >= this.size) {
 				return false;
 			}
 			dx = -1;
+		} else if (o == Orientation.SOUTH) {
+			if (coords.getY() + 1 - ship.getLength() < 0 || coords.getY() >= this.size) {
+				return false;
+			}
+			dy = -1;
+		} else if (o == Orientation.NORTH) {
+			if (coords.getY() + ship.getLength() > this.size || coords.getY() < 0) {
+				return false;
+			}
+			dy = 1;
+		} else if (o == Orientation.WEST) {
+			if (coords.getX() + ship.getLength() > this.size || coords.getX() < 0) {
+				return false;
+			}
+			dx = 1;
 		}
-
 		Coords iCoords = new Coords(coords);
 
 		for (int i = 0; i < ship.getLength(); ++i) {
@@ -132,14 +141,43 @@ public class Board implements IBoard {
 
 	@Override
 	public boolean putShip(AbstractShip ship, ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
+		Orientation o = ship.getOrientation();
+		if (this.canPutShip(ship, coords)){
+			if(o == Orientation.NORTH){
+				for(int i = 0; i < ship.getLength(); i++){
+					board_ships[coords.getX()][coords.getY()+i] = ship.getLabel();
+				}
+				return true;
+			}
+			else if(o == Orientation.EAST){
+				for(int i = 0; i < ship.getLength(); i++){
+					board_ships[coords.getX()-i][coords.getY()] = ship.getLabel();
+				}
+				return true;
+			}
+			else if(o == Orientation.WEST){
+				for(int i = 0; i < ship.getLength(); i++){
+					board_ships[coords.getX()+i][coords.getY()] = ship.getLabel();
+				}
+				return true;
+			}
+			else if(o == Orientation.SOUTH){
+				for(int i = 0; i < ship.getLength(); i++){
+					board_ships[coords.getX()][coords.getY()-i] = ship.getLabel();
+				}
+				return true;
+			}
+		}
+
 		return false;
 	}
 
 	@Override
 	public boolean hasShip(ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
-		return false;
+		if (board_ships[coords.getX()][coords.getY()] != '.'){
+            return true;
+        }else 
+            return false;
 	}
 
 	@Override

@@ -25,6 +25,10 @@ public abstract class AbstractShip {
         return length;
     }
 
+    public char getLabel(){
+        return label;
+    }
+
     public boolean isSunk() {
         return false;
     }
