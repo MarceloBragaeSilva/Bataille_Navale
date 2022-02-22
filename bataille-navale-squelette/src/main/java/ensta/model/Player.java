@@ -42,9 +42,32 @@ public class Player {
 			String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
 			System.out.println(msg);
 			InputHelper.ShipInput res = InputHelper.readShipInput();
-			// TODO set ship orientation
-			// TODO put ship at given position
-			// TODO when ship placement successful
+
+            switch(res.orientation)
+            {
+                case "east":
+                    ships[i].setOrientation(Orientation.EAST);
+                break;
+
+                case "west":
+                    ships[i].setOrientation(Orientation.WEST);
+                break;
+
+                case "north":
+                    ships[i].setOrientation(Orientation.NORTH);
+                break;
+
+                case "south":
+                    ships[i].setOrientation(Orientation.SOUTH);
+                break;
+            }
+
+            try{
+				System.out.println(res.orientation+" "+res.x + " "+res.y);
+                board.putShip(ships[i], new Coords(res.x+1, res.y));  
+            } catch(ArrayIndexOutOfBoundsException e){
+                System.out.println(e.getMessage());
+            }
 			++i;
 			done = i == 5;
 

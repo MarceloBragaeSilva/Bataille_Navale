@@ -8,18 +8,18 @@ public class Board implements IBoard {
 	private String nom;
 	private int size;
 	private char board_ships[][];
-	private char board_hits[][];
+	private boolean board_hits[][];
 	
     public Board(String Nom, int size){
         this.nom = Nom;
 		this.size = size;
 		this.board_ships = new char[size][size];
-        this.board_hits = new char[size][size];
+        this.board_hits = new boolean[size][size];
 
         for(int i = 0; i < size; i++){
             for (int j = 0; j< size; j++){
                 this.board_ships[i][j] = '.'; 
-                this.board_hits[i][j] = '.';
+                this.board_hits[i][j] = false;
             }
         }
     }
@@ -29,12 +29,12 @@ public class Board implements IBoard {
         this.nom = Nom;
 		this.size = DEFAULT_SIZE;
         this.board_ships = new char[size][size];
-        this.board_hits = new char[size][size];
+        this.board_hits = new boolean[size][size];
 
         for(int i = 0; i < 10; i++){
             for (int j = 0; j< 10; j++){
                 this.board_ships[i][j] = '.'; 
-                this.board_hits[i][j] = '.';
+                this.board_hits[i][j] = false;
             }
         }
     }
@@ -88,7 +88,9 @@ public class Board implements IBoard {
                     else          {System.out.print(" " + letterColumn);}
                     letterColumn++;
                 }else if (y != 0 && x!= 0){
-					System.out.print(this.board_hits[y-1][x-1] + " ");
+					if(this.board_hits[y-1][x-1] == false)
+						System.out.print( ". ");
+					else System.out.print( "X ");
                 }
             }    
             System.out.println();
@@ -142,6 +144,7 @@ public class Board implements IBoard {
 	@Override
 	public boolean putShip(AbstractShip ship, ensta.model.Coords coords) {
 		Orientation o = ship.getOrientation();
+		System.out.println(o);
 		if (this.canPutShip(ship, coords)){
 			if(o == Orientation.NORTH){
 				for(int i = 0; i < ship.getLength(); i++){

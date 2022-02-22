@@ -34,7 +34,11 @@ public abstract class AbstractShip {
     }
 
     public Object getName() {
-        return null;
+        return name;
+    }
+
+    public void setOrientation(Orientation o) {
+        orientation = o;
     }
     
 }
