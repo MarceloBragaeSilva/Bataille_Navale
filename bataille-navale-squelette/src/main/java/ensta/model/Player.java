@@ -39,7 +39,7 @@ public class Player {
 
 		do {
 			AbstractShip ship = ships[i];
-			String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
+			String msg = String.format("\nplacer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
 			System.out.println(msg);
 			InputHelper.ShipInput res = InputHelper.readShipInput();
 
@@ -63,7 +63,7 @@ public class Player {
             }
 
             try{
-				System.out.println(res.orientation+" "+res.x + " "+res.y);
+				//System.out.println(res.orientation+" "+res.x + " "+res.y);
                 board.putShip(ships[i], new Coords(res.x+1, res.y));  
             } catch(ArrayIndexOutOfBoundsException e){
                 System.out.println(e.getMessage());

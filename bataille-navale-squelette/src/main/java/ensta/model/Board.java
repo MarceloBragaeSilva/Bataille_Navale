@@ -1,25 +1,26 @@
 package ensta.model;
 
-import ensta.model.ship.AbstractShip;
+import ensta.model.ship.*;
+import ensta.util.*;
 
 public class Board implements IBoard {
 
 	private static final int DEFAULT_SIZE = 10;
 	private String nom;
 	private int size;
-	private char board_ships[][];
-	private boolean board_hits[][];
+	private ShipState ships[][];
+	private Boolean hits[][];
 	
     public Board(String Nom, int size){
         this.nom = Nom;
 		this.size = size;
-		this.board_ships = new char[size][size];
-        this.board_hits = new boolean[size][size];
+		this.ships = new ShipState[size][size];
+        this.hits = new Boolean[size][size];
 
         for(int i = 0; i < size; i++){
             for (int j = 0; j< size; j++){
-                this.board_ships[i][j] = '.'; 
-                this.board_hits[i][j] = false;
+                this.ships[i][j] = new ShipState(); 
+                this.hits[i][j] = null;
             }
         }
     }
@@ -28,13 +29,13 @@ public class Board implements IBoard {
     public Board(String Nom){
         this.nom = Nom;
 		this.size = DEFAULT_SIZE;
-        this.board_ships = new char[size][size];
-        this.board_hits = new boolean[size][size];
+        this.ships = new ShipState[size][size];
+        this.hits = new Boolean[size][size];
 
         for(int i = 0; i < 10; i++){
             for (int j = 0; j< 10; j++){
-                this.board_ships[i][j] = '.'; 
-                this.board_hits[i][j] = false;
+                this.ships[i][j] = new ShipState(); 
+                this.hits[i][j] = null;
             }
         }
     }
@@ -71,9 +72,9 @@ public class Board implements IBoard {
                     else               {System.out.print(" " + letterColumn);}
                     letterColumn++;
                 }else if (y != 0 && x!= 0 && x!= this.size)
-                    System.out.print(this.board_ships[x-1][y-1] + " ");      
+                    System.out.print(this.ships[x-1][y-1] + " ");      
                 else if (y != 0 && x == this.size)
-                    System.out.print(this.board_ships[x-1][y-1] + "           ");
+                    System.out.print(this.ships[x-1][y-1] + "           ");
             }
 
 			//print for Frappes
@@ -88,9 +89,11 @@ public class Board implements IBoard {
                     else          {System.out.print(" " + letterColumn);}
                     letterColumn++;
                 }else if (y != 0 && x!= 0){
-					if(this.board_hits[y-1][x-1] == false)
+					if(this.hits[y-1][x-1] == null)
 						System.out.print( ". ");
-					else System.out.print( "X ");
+					else if (hits[y-1][x-1])
+						System.out.print(ColorUtil.colorize("X ", ColorUtil.Color.RED));
+					else System.out.print(ColorUtil.colorize("X ", ColorUtil.Color.WHITE));
                 }
             }    
             System.out.println();
@@ -144,29 +147,33 @@ public class Board implements IBoard {
 	@Override
 	public boolean putShip(AbstractShip ship, ensta.model.Coords coords) {
 		Orientation o = ship.getOrientation();
-		System.out.println(o);
+		//System.out.println(o);
 		if (this.canPutShip(ship, coords)){
 			if(o == Orientation.NORTH){
 				for(int i = 0; i < ship.getLength(); i++){
-					board_ships[coords.getX()][coords.getY()+i] = ship.getLabel();
+					ships[coords.getX()][coords.getY()+i].setShip(ship);
+					ships[coords.getX()][coords.getY()+i].getShip().setLabel(ship.getLabel());
 				}
 				return true;
 			}
 			else if(o == Orientation.EAST){
 				for(int i = 0; i < ship.getLength(); i++){
-					board_ships[coords.getX()-i][coords.getY()] = ship.getLabel();
+					ships[coords.getX()-i][coords.getY()].setShip(ship);
+					ships[coords.getX()-i][coords.getY()].getShip().setLabel(ship.getLabel());
 				}
 				return true;
 			}
 			else if(o == Orientation.WEST){
 				for(int i = 0; i < ship.getLength(); i++){
-					board_ships[coords.getX()+i][coords.getY()] = ship.getLabel();
+					ships[coords.getX()+i][coords.getY()].setShip(ship);
+					ships[coords.getX()+i][coords.getY()].getShip().setLabel(ship.getLabel());
 				}
 				return true;
 			}
 			else if(o == Orientation.SOUTH){
 				for(int i = 0; i < ship.getLength(); i++){
-					board_ships[coords.getX()][coords.getY()-i] = ship.getLabel();
+					ships[coords.getX()][coords.getY()-i].setShip(ship);
+					ships[coords.getX()][coords.getY()-i].getShip().setLabel(ship.getLabel());
 				}
 				return true;
 			}
@@ -177,7 +184,7 @@ public class Board implements IBoard {
 
 	@Override
 	public boolean hasShip(ensta.model.Coords coords) {
-		if (board_ships[coords.getX()][coords.getY()] != '.'){
+		if (ships[coords.getX()][coords.getY()].getShip() != null){
             return true;
         }else 
             return false;
