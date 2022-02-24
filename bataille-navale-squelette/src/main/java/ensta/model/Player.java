@@ -39,7 +39,7 @@ public class Player {
 
 		do {
 			AbstractShip ship = ships[i];
-			String msg = String.format("\nplacer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
+			String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
 			System.out.println(msg);
 			InputHelper.ShipInput res = InputHelper.readShipInput();
 
@@ -61,17 +61,15 @@ public class Player {
                     ships[i].setOrientation(Orientation.SOUTH);
                 break;
             }
-
-            try{
-				//System.out.println(res.orientation+" "+res.x + " "+res.y);
-                board.putShip(ships[i], new Coords(res.x+1, res.y));  
-            } catch(ArrayIndexOutOfBoundsException e){
-                System.out.println(e.getMessage());
-            }
-			++i;
-			done = i == 5;
-
-			board.print();
+				
+			boolean posOkay = board.putShip(ships[i], new Coords(res.x+1, res.y)); 
+			if(!posOkay)
+				System.out.println("Mauvaise placement, ressayez-le");
+			else{
+				++i;
+				board.print();
+			}
+			done = i == ships.length;
 		} while (!done);
 	}
 
@@ -80,10 +78,32 @@ public class Player {
 		Hit hit = null;
 
 		do {
-			System.out.println("où frapper?");
+			System.out.println("\noù frapper?");
 			InputHelper.CoordInput hitInput = InputHelper.readCoordInput();
 			// TODO call sendHit on this.opponentBoard
+			coords.setX(hitInput.x);
+			coords.setY(hitInput.y);
+			//System.out.println(coords.getX()+""+coords.getY());
+			hit = this.opponentBoard.sendHit(coords);
+			if(hit == Hit.MISS){
+				this.board.setHit(false, coords);
+				System.out.println("Miss");
+				done = true;
+			}
+			else if (hit == Hit.STRIKE){
+				this.board.setHit(true, coords);
+				System.out.println("Hitted!");
+			}
+			else {
+				this.board.setHit(true, coords);
+				
+				System.out.println("Ship "+ hit.toString()+" Destroyed");
+				done = true;
+			}
 
+			board.print();
+			opponentBoard.print();
+			
 			// TODO : Game expects sendHit to return BOTH hit result & hit coords.
 			// return hit is obvious. But how to return coords at the same time ?
 		} while (!done);

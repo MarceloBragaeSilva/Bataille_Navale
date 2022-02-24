@@ -8,7 +8,7 @@ public abstract class AbstractShip {
     private int length;
     private char label;
     private String name;
-    private int strikeCount;
+    private int strikeCount = 0;
 
 
     public AbstractShip(char label, String name, int length, Orientation orientation){

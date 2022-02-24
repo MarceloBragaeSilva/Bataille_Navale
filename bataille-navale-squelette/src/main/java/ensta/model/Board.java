@@ -89,9 +89,9 @@ public class Board implements IBoard {
                     else          {System.out.print(" " + letterColumn);}
                     letterColumn++;
                 }else if (y != 0 && x!= 0){
-					if(this.hits[y-1][x-1] == null)
+					if(this.hits[x-1][y-1] == null)
 						System.out.print( ". ");
-					else if (hits[y-1][x-1])
+					else if (hits[x-1][y-1])
 						System.out.print(ColorUtil.colorize("X ", ColorUtil.Color.RED));
 					else System.out.print(ColorUtil.colorize("X ", ColorUtil.Color.WHITE));
                 }
@@ -178,7 +178,7 @@ public class Board implements IBoard {
 				return true;
 			}
 		}
-
+		
 		return false;
 	}
 
@@ -193,19 +193,29 @@ public class Board implements IBoard {
 	@Override
 	public void setHit(boolean hit, ensta.model.Coords coords) {
 		// TODO Auto-generated method stub
-		
+		this.hits[coords.getX()][coords.getY()] = hit;
 	}
 
 	@Override
 	public Boolean getHit(ensta.model.Coords coords) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.hits[coords.getX()][coords.getY()];
 	}
 
 	@Override
-	public Hit sendHit(ensta.model.Coords res) {
-		// TODO Auto-generated method stub
-		return null;
+	public Hit sendHit(ensta.model.Coords coords) {
+		int x = coords.getX();
+		int y = coords.getY();
+		if (this.ships[x][y].getShip() == null)
+            return Hit.MISS;
+        else{
+            this.ships[x][y].addStrike();
+            if(this.ships[x][y].isSunk())
+                return Hit.fromInt(this.ships[x][y].getShip().getLength());
+            else if (this.ships[x][y].isStruck())
+                return Hit.STRIKE;
+            else 
+                return Hit.MISS;
+		}
 	}
 
 }

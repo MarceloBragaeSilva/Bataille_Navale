@@ -9,7 +9,7 @@ import ensta.model.ship.*;
 public class Main {
 
 	public static void main(String args[]) {
-        Board board1 = new Board("Board1");
+        //Board board1 = new Board("Board1");
 		//board1.print();
 
         //Board board2 = new Board("Board2", 6);
@@ -30,16 +30,30 @@ public class Main {
         List<AbstractShip> ships = new ArrayList<AbstractShip>();
         ships.add(new Destroyer());
         ships.add(new Submarine());
-        ships.add(new Submarine());
-        ships.add(new BattleShip());
-        ships.add(new Carrier());
+        //ships.add(new Submarine());
+        //ships.add(new BattleShip());
+        //ships.add(new Carrier());
 
-        Board board = new Board("Board");
+        Board board1 = new Board("Board1");
         Board board2 = new Board("Board2");
-        Player play = new Player(board, board2, ships);
-        play.putShips();
+        Player play1 = new Player(board1, board2, ships);
+        Player play2 = new Player(board2, board1, ships);
+        System.out.println("\n\nPlayer 1 put ships");
+        play1.putShips();
+        System.out.println("\n\nPlayer 2 put ships");
+        play2.putShips();
 
-        board.print();
+        System.out.println("\n\nPlayer 1 turn");
+        Hit hit = play1.sendHit(new Coords());
+        System.out.println("\n\nPlayer 2 turn");
+        hit = play2.sendHit(new Coords());
+
+
+
+
+        
+
+        //board.print();
         System.out.println("FINISHED GAME");
         
     }

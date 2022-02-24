@@ -39,7 +39,7 @@ public interface IBoard {
      */
     public Boolean getHit(Coords coords);
 
-	public Hit sendHit(Coords res);
+	public Hit sendHit(Coords coords);
 
 	public boolean canPutShip(AbstractShip ship, Coords coords);
 }
