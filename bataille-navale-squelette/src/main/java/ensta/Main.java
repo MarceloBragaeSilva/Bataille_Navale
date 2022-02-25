@@ -9,6 +9,7 @@ import ensta.model.ship.*;
 public class Main {
 
 	public static void main(String args[]) {
+        /*
         //Board board1 = new Board("Board1");
 		//board1.print();
 
@@ -54,6 +55,9 @@ public class Main {
         
 
         //board.print();
+        */
+
+        TestGame test = new TestGame();
         System.out.println("FINISHED GAME");
         
     }

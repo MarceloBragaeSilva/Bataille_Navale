@@ -21,7 +21,9 @@ public class ShipState {
     }
 
     public boolean isStruck(){
-        return this.struck;
+        if (shipRef == null)
+            return false;
+        else return this.struck;
 
     }
 
@@ -34,7 +36,9 @@ public class ShipState {
     }
 
     public boolean isSunk(){
-        return this.shipRef.isSunk();
+        if (shipRef == null)
+            return false;
+        else return this.shipRef.isSunk();
     }
 
     public AbstractShip getShip(){

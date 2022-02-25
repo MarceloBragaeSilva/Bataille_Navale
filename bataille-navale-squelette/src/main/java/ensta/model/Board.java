@@ -25,7 +25,6 @@ public class Board implements IBoard {
         }
     }
 
-
     public Board(String Nom){
         this.nom = Nom;
 		this.size = DEFAULT_SIZE;
@@ -140,8 +139,7 @@ public class Board implements IBoard {
 
 	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.size;
 	}
 
 	@Override
@@ -218,4 +216,8 @@ public class Board implements IBoard {
 		}
 	}
 
+
+	public boolean shipSunk(Coords coords){
+		return this.ships[coords.getX()][coords.getY()].isSunk();
+	}
 }
