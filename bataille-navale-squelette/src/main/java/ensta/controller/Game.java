@@ -17,6 +17,8 @@ import ensta.model.ship.Destroyer;
 import ensta.model.ship.Submarine;
 import ensta.util.ColorUtil;
 
+import ensta.ai.*;
+
 public class Game {
 
 	/*
@@ -28,8 +30,9 @@ public class Game {
 	 * *** Attributs
 	 */
 	private Player player1;
-	private Player player2;
+	private PlayerAI player2;
 	private Scanner sin;
+	private boolean view_ai_board;
 
 	/*
 	 * *** Constructeurs
@@ -39,13 +42,35 @@ public class Game {
 
 	public Game init() {
 		if (!loadSave()) {
+			
+			System.out.println("Entrez votre nom: ");
+            sin = new Scanner(System.in);
+			String board_name = sin.nextLine();
 
+			System.out.println("Entrez la taille du tableau: ");
+            int size = sin.nextInt();
 
-			// TODO init boards
+			Scanner sin2 = new Scanner(System.in);
+			System.out.println("Voulez-vous voir le tableau adversaire? (O/N): ");
+            String view = sin2.nextLine();
 
-			// TODO init this.player1 & this.player2
+			if(view.equals("O"))
+				view_ai_board = true;
+			else view_ai_board = false;
 
-			// TODO place player ships
+            Board p1_board = new Board(board_name, size);
+            Board p2_board = new Board("AI", size);
+
+            List<AbstractShip> p1_ships = createDefaultShips();
+            List<AbstractShip> p2_ships = createDefaultShips();
+
+            this.player1 = new Player(p1_board, p2_board, p1_ships);
+            this.player2 = new PlayerAI(p2_board, p1_board, p2_ships);
+
+            p1_board.print();
+
+            player1.putShips();
+            player2.putShips();
 		}
 		return this;
 	}
@@ -56,24 +81,24 @@ public class Game {
 	public void run() {
 		Coords coords = new Coords();
 		Board b1 = player1.getBoard();
+		Board b2 = player2.getBoard();
 		Hit hit;
 
 		// main loop
-		b1.print();
 		boolean done;
 		do {
-			hit = Hit.MISS; // TODO player1 send a hit
+			hit = player1.sendHit(coords); // player1 send a hit
 			boolean strike = hit != Hit.MISS; // TODO set this hit on his board (b1)
 
 			done = updateScore();
-			b1.print();
 			System.out.println(makeHitMessage(false /* outgoing hit */, coords, hit));
+			//b1.print();
 
 			// save();
 
 			if (!done && !strike) {
 				do {
-					hit = Hit.MISS; // TODO player2 send a hit.
+					hit = player2.sendHit(coords); // player2 send a hit.
 
 					strike = hit != Hit.MISS;
 					if (strike) {
@@ -81,6 +106,7 @@ public class Game {
 					}
 					System.out.println(makeHitMessage(true /* incoming hit */, coords, hit));
 					done = updateScore();
+					if(view_ai_board) b2.print();
 
 					if (!done) {
 //						save();

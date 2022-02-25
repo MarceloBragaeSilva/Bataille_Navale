@@ -51,7 +51,7 @@ public class Board implements IBoard {
 			   x1 x2 x3 x4 x5 x6
 		*/
 
-        System.out.println(this.nom);
+        System.out.println("\n"+this.nom);
         System.out.print("Navires:");
 		for (int i=0; i<this.size; i++)
 			System.out.print("  ");

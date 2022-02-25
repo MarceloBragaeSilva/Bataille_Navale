@@ -4,6 +4,7 @@ import java.util.List;
 import ensta.model.Board;
 import ensta.model.Player;
 import ensta.model.ship.AbstractShip;
+import ensta.model.*;
 
 public class PlayerAI extends Player {
     /* **
@@ -19,5 +20,11 @@ public class PlayerAI extends Player {
         ai = new BattleShipsAI(ownBoard, opponentBoard);
     }
 
-    // TODO AIPlayer must not inherit "keyboard behavior" from player. Call ai instead.
+    public void putShips(){
+        ai.putShips(ships);
+    }
+
+    public Hit sendHit(Coords coords){
+        return ai.sendHit(coords);
+    }
 }

@@ -1,6 +1,6 @@
 package ensta;
 
-//import ensta.controller.Game;
+import ensta.controller.Game;
 import java.util.*;
 import ensta.model.*;
 import ensta.model.ship.*;
@@ -57,7 +57,11 @@ public class Main {
         //board.print();
         */
 
-        TestGame test = new TestGame();
+        //TestGame test = new TestGame();
+
+        Game jeu = new Game();
+        jeu.init();
+        jeu.run();
         System.out.println("FINISHED GAME");
         
     }
