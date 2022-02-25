@@ -32,6 +32,7 @@ public class TestGame {
         do {
 
             hit = testAI.sendHit(coords);
+            //System.out.println("Cords"+ coords.getX()+""+coords.getY());
 
             if( board.hasShip(coords) && board.shipSunk(coords))
                 destroyedShips++;
@@ -58,7 +59,6 @@ public class TestGame {
                         (coords.getY()+1), msg);
             }
             System.out.println(ColorUtil.colorize(msg, color));
-            System.out.println(coords.getX()+" "+coords.getY());
 
 
             board.print();

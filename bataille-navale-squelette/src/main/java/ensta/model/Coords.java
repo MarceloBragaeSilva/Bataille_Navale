@@ -20,11 +20,11 @@ public class Coords {
     }
 
     public int getX(){
-        return X;
+        return this.X;
     }
 
     public int getY(){
-        return Y;
+        return this.Y;
     }
 
     public void setX(int X){
@@ -41,16 +41,15 @@ public class Coords {
     }
 
     public boolean isInBoard(int size) {
-        if(this.X>0 && this.X<=size && this.Y>0 && this.Y<=size)
+        if(this.X>=0 && this.X<size && this.Y>=0 && this.Y<size)
              return true;
         else return false;
     }
 
     public static Coords randomCoords(int size) {
         Random rand = new Random();
-
-        return new Coords(rand.nextInt(size)+1,
-        rand.nextInt(size)+1);
+        Coords newCoord = new Coords(rand.nextInt(size)+1, rand.nextInt(size)+1);
+        return newCoord;
     }
     
 }
